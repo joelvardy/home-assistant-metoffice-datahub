@@ -1,0 +1,49 @@
+name: Release
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - 'custom_components/metoffice_datahub/manifest.json'
+
+permissions:
+  contents: write
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Get previous version
+        id: previous_version
+        run: |
+          git fetch --prune --unshallow || true
+          PREV_VERSION=$(git show HEAD~1:custom_components/metoffice_datahub/manifest.json | jq -r .version)
+          echo "previous_version=$PREV_VERSION" >> $GITHUB_OUTPUT
+
+      - name: Get current version
+        id: current_version
+        run: |
+          CURR_VERSION=$(jq -r .version custom_components/metoffice_datahub/manifest.json)
+          echo "current_version=$CURR_VERSION" >> $GITHUB_OUTPUT
+
+      - name: Create Release
+        if: steps.previous_version.outputs.previous_version != steps.current_version.outputs.current_version
+        uses: softprops/action-gh-release@v1
+        with:
+          name: v${{ steps.current_version.outputs.current_version }}
+          tag_name: v${{ steps.current_version.outputs.current_version }}
+          body: |
+            Release v${{ steps.current_version.outputs.current_version }}
+
+            Changes:
+            - Version bump from ${{ steps.previous_version.outputs.previous_version }} to ${{ steps.current_version.outputs.current_version }}
+          draft: false
+          prerelease: false
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

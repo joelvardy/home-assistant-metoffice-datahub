@@ -1,0 +1,17 @@
+{
+    "config": {
+        "error": {
+            "cannot_connect": "Failed to connect",
+            "unknown": "Unexpected error occurred"
+        },
+        "step": {
+            "user": {
+                "data": {
+                    "api_key": "API Key",
+                    "latitude": "Latitude",
+                    "longitude": "Longitude"
+                }
+            }
+        }
+    }
+}

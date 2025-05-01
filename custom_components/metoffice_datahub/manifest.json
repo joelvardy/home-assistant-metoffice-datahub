@@ -1,0 +1,12 @@
+{
+  "domain": "metoffice_datahub",
+  "name": "Met Office (DataHub)",
+  "codeowners": ["@joelvardy"],
+  "config_flow": true,
+  "documentation": "https://github.com/joelvardy/home-assistant-metoffice-datahub",
+  "integration_type": "service",
+  "iot_class": "cloud_polling",
+  "issue_tracker": "https://github.com/joelvardy/home-assistant-metoffice-datahub/issues",
+  "requirements": ["aiohttp>=3.8.0"],
+  "version": "1.0.0"
+}
